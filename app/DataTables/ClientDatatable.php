@@ -17,10 +17,13 @@ class ClientDatatable extends DataTable
     {
         return datatables($query)
             ->addColumn('action', 'admin.btn.action')
+            ->addColumn('gender', 'admin.btn.gender')
+            ->addColumn('contact', 'admin.btn.contact')
+            ->addColumn('statu', 'admin.btn.statu')
             // ->addColumn('delete', 'admin.btn.delete')
             // ->addColumn('check', '<input type="checkbox" name="checked_item[]" class="checked_item" value="{{ $id }}">')
             // ->rawColumns(['edit', 'delete', 'check']);
-            ->rawColumns(['action']);
+            ->rawColumns(['action','gender','contact','statu']);
     }
 
     /**
@@ -102,17 +105,21 @@ class ClientDatatable extends DataTable
                 'data' => 'name',
                 'title' => trans('admin.name'),
             ], [
-                'name' => 'phone',
-                'data' => 'phone',
-                'title' => trans('admin.phone'),
+                'name' => 'gender',
+                'data' => 'gender',
+                'title' => trans('admin.gender'),
+            ], [
+                'name' => 'contact',
+                'data' => 'contact',
+                'title' => trans('admin.contact'),
             ], [
                 'name' => 'statu',
                 'data' => 'statu',
                 'title' => trans('admin.statu'),
             ], [
-                'name' => 'tries',
-                'data' => 'tries',
-                'title' => trans('admin.tries'),
+                'name' => 'preflang',
+                'data' => 'preflang',
+                'title' => trans('admin.preflang'),
             ], [
                 'name' => 'created_at',
                 'data' => 'created_at',

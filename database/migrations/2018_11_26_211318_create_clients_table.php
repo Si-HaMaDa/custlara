@@ -22,14 +22,14 @@ class CreateClientsTable extends Migration
             $table->string('fb')->nullable();
             $table->integer('phone')->nullable()->unique();
             $table->string('email')->nullable()->unique();
-            $table->string('preflang')->nullable();
+            $table->string('preflang')->default('EN');
             $table->string('addby')->unsigned();
             $table->foreign('addby')->references('id')->on('users');
             $table->integer('f_calls')->default(0);
             $table->json('f_calls_rec')->nullable();
             $table->string('respon_id')->unsigned()->nullable();
             $table->foreign('respon_id')->references('id')->on('users');
-            $table->integer('statu');
+            $table->integer('statu')->default('n');
             $table->timestamp('init');
             $table->json('tries')->nullable();
             $table->longText('notes')->nullable();

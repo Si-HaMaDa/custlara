@@ -1,7 +1,7 @@
 $(document).ready(function(){
     console.log('HaMaDa');
     $('#statu').on('change', function(){
-        var valus_note = ['2', '3', '4'];
+        var valus_note = ['a', 'f', 's'];
         if ( valus_note.includes( $(this).val() ) ){
             $('#try_note').fadeIn();
         }else{
@@ -17,10 +17,10 @@ $(document).ready(function(){
         }
     });
 })
-function start_conv(){$('#statu').val('1');$('#try_note').fadeOut();}
-function end_convf(){$('#statu').val('3');$('#try_note').fadeIn()}
-function end_convs(){$('#statu').val('4');$('#try_note').fadeIn()}
-function need_atten(){$('#statu').val('2');$('#try_note').fadeIn()}
-function start_soul(){$('#statu').val('1');$('#try_note').fadeOut();}
+function start_conv(){$('#statu').val('p');$('#try_note').fadeOut();}
+function end_convf(){$('#statu').val('f');$('#try_note').fadeIn()}
+function end_convs(){$('#statu').val('s');$('#try_note').fadeIn()}
+function need_atten(){$('#statu').val('a');$('#try_note').fadeIn()}
+function start_soul(){$('#statu').val('p');$('#try_note').fadeOut();}
 
 

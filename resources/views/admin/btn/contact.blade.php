@@ -1,0 +1,1 @@
+{!! contacts_helper(['fb'=>$fb, 'phone'=>$phone, 'email'=>$email]) !!}

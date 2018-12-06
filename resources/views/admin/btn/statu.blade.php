@@ -1,0 +1,1 @@
+<i class="fa fa-2x {!! statu_helper($statu)['icon'] !!} text-{!! statu_helper($statu)['color'] !!}"></i>

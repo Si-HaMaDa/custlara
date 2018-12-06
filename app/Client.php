@@ -38,4 +38,18 @@ class Client extends Model
     protected $hidden = [];
     protected $dates = ['deleted_at'];
 
+    public function respon_idd() {
+		return $this->hasOne('App\Client', 'id', 'respon_id');
+    }
+    
+    public function respon()
+    {
+        return $this->belongsTo(\App\User::class);
+    }
+
+    public function tries_name($id)
+    {
+        return \App\User::find($id);
+    }
+
 }
