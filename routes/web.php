@@ -19,7 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home'); //->middleware('auth.basic');
 
-Route::group(['prefix' => 'panel'], function () {
+Route::group(['prefix' => 'panel', 'middleware' => 'auth'], function () {
 
     Route::get('/', function () {
         return view('admin.index');
