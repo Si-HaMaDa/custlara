@@ -51,8 +51,8 @@ class ClientController extends Controller
                 'email'  => trans('admin.email'),
             ]
         );
-        $data['addby'] = Auth::user()->id;
-        Client::create($data);
+        $request['addby'] = Auth::user()->id;
+        Client::create($request->except(['_token', '_method']));
         session()->flash('success', trans('admin.admin_added'));
         return redirect(aurl('clients'));
     }
