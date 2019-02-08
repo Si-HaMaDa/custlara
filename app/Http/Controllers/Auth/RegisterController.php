@@ -54,7 +54,7 @@ class RegisterController extends Controller
             'username' => 'required|string|max:20|alpha_dash|unique:users',
             'email'    => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'lvl'      => 'nullable|numeric',
+            'lvl'      => 'nullable|numeric|not_in:1',
         ]);
     }
 

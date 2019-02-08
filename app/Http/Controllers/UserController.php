@@ -68,12 +68,18 @@ class UserController extends Controller
             return back()->withErrors(['Current logged in user is not allowed to Edit or Update this']);
         }
 
+        if ($user->lvl == 1){
+            $lvl_val = 'nullable|numeric';
+        } else {
+            $lvl_val = 'nullable|numeric|not_in:1';
+        }
+
         $data = $this->validate(request(), [
             'name'     => 'required|string|max:255',
             'username' => 'required|string|max:20|alpha_dash|unique:users,username,'.$id,
             'email'    => 'required|string|email|max:255|unique:users,email,'.$id,
             'password' => 'sometimes|nullable|string|min:6|confirmed',
-            'lvl'      => 'nullable|numeric|not_in:1',
+            'lvl'      => $lvl_val,
         ]);
 
         if (request()->password) {
