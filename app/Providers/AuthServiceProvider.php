@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -13,7 +12,9 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        // 'App\Model' => 'App\Policies\ModelPolicy',
+        \App\Client::class => \App\Policies\ClientPolicy::class,
+        \App\User::class   => \App\Policies\UserPolicy::class,
     ];
 
     /**
@@ -25,6 +26,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        /* Gate::define('update-client', function ($user, $client) {
+        return $user->id == $client->respon_id;
+        }); */
+        /* if (Gate::denies('update-client', Client::find($id))) {
+    // $this->withError('hhh');
+    return back()->withErrors(['The Message']);
+    } */
     }
 }

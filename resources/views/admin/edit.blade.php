@@ -90,7 +90,7 @@
                         <div class="panel-heading bg-{{ statu_helper($try[0][1])['color'] }}">
                             {{ statu_helper($try[0][1])['name'] }}
                             {{ trans('admin.by') }}
-                            {{ !empty($try[2][1]) ? $client->tries_name($try[2][1])->name : $client->tries_name($try[2][0])->name }}
+                            {!! !empty($try[2][1]) ? $client->tries_name($try[2][1])->name : $client->tries_name($try[2][0])->name !!}
                         </div>
                         <div class="panel-body">
                         <p class="col-md-2"><b>{{ trans('admin.startend') }}</b></p>
@@ -101,7 +101,7 @@
                         <div class="panel-body">
                         <p class="col-md-2"><b>{{ trans('admin.startby') }}</b></p>
                         <p class="col-md-10">
-                            {{ $client->tries_name($try[2][0])->name }}
+                            {!! $client->tries_name($try[2][0])->name !!}
                         </p>
                         </div>
                         <div class="panel-body">

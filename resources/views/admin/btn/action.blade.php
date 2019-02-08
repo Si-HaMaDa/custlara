@@ -1,5 +1,5 @@
 <!-- Trigger the modal with a button -->
-<a href="{{ aurl('clients/'.$id.'/edit') }}" class="btn btn-info"><i class="fa fa-edit"></i></a>
+<a href="{{ URL::current().'/'.$id.'/edit' }}" class="btn btn-info"><i class="fa fa-edit"></i></a>
 
 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#del_admin{{ $id }}"><i class="fa fa-trash"></i></button>
 
@@ -13,7 +13,7 @@
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">{{ trans('admin.delete') }}</h4>
       </div>
-      {!! Form::open(['route' => ['clients.destroy', $id], 'method' => 'delete']) !!}
+      {!! Form::open(['url' => [\URL::current().'/'.$id], 'method' => 'delete']) !!}
         <div class="modal-body">
             <p>{!! trans('admin.delete_this', ['name'=>$name]) .' <b>'. $name . '</b>'!!}</p>
         </div>

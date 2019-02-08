@@ -49,7 +49,10 @@ class Client extends Model
 
     public function tries_name($id)
     {
-        return \App\User::find($id);
+        $try_user  = \App\User::find($id);
+        if (!$try_user)
+        $try_user = (object) ['name' => '<small><b>Deleted User...</b></small>'];
+        return $try_user;
     }
 
 }

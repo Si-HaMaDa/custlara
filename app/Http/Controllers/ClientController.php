@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
+// use Illuminate\Support\Facades\Gate;
+
 class ClientController extends Controller
 {
     /**
@@ -90,6 +92,11 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        if (Auth::user()->cant('update', Client::find($id))) {
+            return back()->withErrors(['Current logged in user is not allowed to Edit this']);
+        }
+
         $data = $this->validate(request(),
             [
                 'name'   => 'required',
@@ -108,15 +115,17 @@ class ClientController extends Controller
         // dd($request->only(
         // 'email', 'name', 'gender', 'token'
         // ));
-        if ($request['f_call']){
+        if ($request['f_call']) {
             unset($request['statu']);
-            $client = Client::find($id);
+            $client             = Client::find($id);
             $request['f_calls'] = $client['f_calls'] + 1;
-            if (!empty($client['f_calls_rec']))
+            if (!empty($client['f_calls_rec'])) {
                 $f_calls_rec = json_decode($client['f_calls_rec']);
-            $f_calls_rec[] = [Carbon::now()->toDateTimeString(), Auth::user()->id];
+            }
+
+            $f_calls_rec[]          = [Carbon::now()->toDateTimeString(), Auth::user()->id];
             $request['f_calls_rec'] = json_encode($f_calls_rec);
-        }else{
+        } else {
             $this->check_statu($request, $id);
         }
         Client::where('id', $id)->update($request->except(['_token', '_method', 'addby', 'f_call', 'try_note']));
@@ -132,13 +141,16 @@ class ClientController extends Controller
      */
     public function destroy($id)
     {
+        if (Auth::user()->cant('delete', Client::find($id))) {
+            return back()->withErrors(['Current logged in user is not allowed to Delete this']);
+        }
         Client::find($id)->delete();
         session()->flash('success', trans('admin.deleted'));
         return redirect(aurl('clients'));
     }
 
     protected function check_statu($request, $id)
-    { 
+    {
         // dd(json_encode($arr_med));
         // dd(json_decode($foqjson));
 
@@ -153,16 +165,16 @@ class ClientController extends Controller
             if ($request['statu'] == 'p') {
                 $request['init']      = Carbon::now()->toDateTimeString();
                 $request['respon_id'] = Auth::user()->id;
-            }elseif($request['statu'] == 'a'){
-                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array() ;
+            } elseif ($request['statu'] == 'a') {
+                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array();
                 array_unshift($trying, [['n', 'a'], [Carbon::now()->toDateTimeString()], [Auth::user()->id], $request['try_note']]);
                 $request['tries'] = json_encode($trying);
-            }elseif($request['statu'] == 'f'){
-                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array() ;
+            } elseif ($request['statu'] == 'f') {
+                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array();
                 array_unshift($trying, [['n', 'f'], [Carbon::now()->toDateTimeString()], [Auth::user()->id], $request['try_note']]);
                 $request['tries'] = json_encode($trying);
-            }elseif($request['statu'] == 's'){
-                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array() ;
+            } elseif ($request['statu'] == 's') {
+                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array();
                 array_unshift($trying, [['n', 's'], [Carbon::now()->toDateTimeString()], [Auth::user()->id], $request['try_note']]);
                 $request['tries'] = json_encode($trying);
             }
@@ -172,56 +184,56 @@ class ClientController extends Controller
             if ($request['statu'] == 'n') {
                 $request['init']      = null;
                 $request['respon_id'] = null;
-            }elseif($request['statu'] == 'a'){
-                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array() ;
-                array_unshift($trying, [['p', 'a'], [$client['init'], Carbon::now()->toDateTimeString()], [(int)($client['respon_id']), Auth::user()->id], $request['try_note']]);
-                $request['tries'] = json_encode($trying);
+            } elseif ($request['statu'] == 'a') {
+                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array();
+                array_unshift($trying, [['p', 'a'], [$client['init'], Carbon::now()->toDateTimeString()], [(int) ($client['respon_id']), Auth::user()->id], $request['try_note']]);
+                $request['tries']     = json_encode($trying);
                 $request['init']      = null;
                 $request['respon_id'] = null;
-            }elseif($request['statu'] == 'f'){
-                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array() ;
-                array_unshift($trying, [['p', 'f'], [$client['init'], Carbon::now()->toDateTimeString()], [(int)($client['respon_id']), Auth::user()->id], $request['try_note']]);
-                $request['tries'] = json_encode($trying);
+            } elseif ($request['statu'] == 'f') {
+                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array();
+                array_unshift($trying, [['p', 'f'], [$client['init'], Carbon::now()->toDateTimeString()], [(int) ($client['respon_id']), Auth::user()->id], $request['try_note']]);
+                $request['tries']     = json_encode($trying);
                 $request['init']      = null;
                 $request['respon_id'] = null;
-            }elseif($request['statu'] == 's'){
-                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array() ;
-                array_unshift($trying, [['p', 's'], [$client['init'], Carbon::now()->toDateTimeString()], [(int)($client['respon_id']), Auth::user()->id], $request['try_note']]);
-                $request['tries'] = json_encode($trying);
+            } elseif ($request['statu'] == 's') {
+                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array();
+                array_unshift($trying, [['p', 's'], [$client['init'], Carbon::now()->toDateTimeString()], [(int) ($client['respon_id']), Auth::user()->id], $request['try_note']]);
+                $request['tries']     = json_encode($trying);
                 $request['init']      = null;
                 $request['respon_id'] = null;
             }
 
         } elseif ($client['statu'] == 'a') {
-            
+
             if ($request['statu'] == 'n') {
 
-            }elseif($request['statu'] == 'p'){
+            } elseif ($request['statu'] == 'p') {
                 $request['init']      = Carbon::now()->toDateTimeString();
                 $request['respon_id'] = Auth::user()->id;
-            }elseif($request['statu'] == 'f'){
-                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array() ;
+            } elseif ($request['statu'] == 'f') {
+                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array();
                 array_unshift($trying, [['a', 'f'], [Carbon::now()->toDateTimeString()], [Auth::user()->id], $request['try_note']]);
                 $request['tries'] = json_encode($trying);
-            }elseif($request['statu'] == 's'){
-                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array() ;
+            } elseif ($request['statu'] == 's') {
+                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array();
                 array_unshift($trying, [['a', 's'], [Carbon::now()->toDateTimeString()], [Auth::user()->id], $request['try_note']]);
                 $request['tries'] = json_encode($trying);
             }
 
         } elseif ($client['statu'] == 'f') {
-            
+
             if ($request['statu'] == 'n') {
-                
-            }elseif($request['statu'] == 'p'){
+
+            } elseif ($request['statu'] == 'p') {
                 $request['init']      = Carbon::now()->toDateTimeString();
                 $request['respon_id'] = Auth::user()->id;
-            }elseif($request['statu'] == 'a'){
-                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array() ;
+            } elseif ($request['statu'] == 'a') {
+                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array();
                 array_unshift($trying, [['f', 'a'], [Carbon::now()->toDateTimeString()], [Auth::user()->id], $request['try_note']]);
                 $request['tries'] = json_encode($trying);
-            }elseif($request['statu'] == 's'){
-                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array() ;
+            } elseif ($request['statu'] == 's') {
+                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array();
                 array_unshift($trying, [['f', 's'], [Carbon::now()->toDateTimeString()], [Auth::user()->id], $request['try_note']]);
                 $request['tries'] = json_encode($trying);
             }
@@ -229,16 +241,16 @@ class ClientController extends Controller
         } elseif ($client['statu'] == 's') {
 
             if ($request['statu'] == 'n') {
-                
-            }elseif($request['statu'] == 'p'){
+
+            } elseif ($request['statu'] == 'p') {
                 $request['init']      = Carbon::now()->toDateTimeString();
                 $request['respon_id'] = Auth::user()->id;
-            }elseif($request['statu'] == 'a'){
-                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array() ;
+            } elseif ($request['statu'] == 'a') {
+                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array();
                 array_unshift($trying, [['s', 'a'], [Carbon::now()->toDateTimeString()], [Auth::user()->id], $request['try_note']]);
                 $request['tries'] = json_encode($trying);
-            }elseif($request['statu'] == 'f'){
-                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array() ;
+            } elseif ($request['statu'] == 'f') {
+                $trying = !empty($client['tries']) ? json_decode($client['tries']) : array();
                 array_unshift($trying, [['s', 'f'], [Carbon::now()->toDateTimeString()], [Auth::user()->id], $request['try_note']]);
                 $request['tries'] = json_encode($trying);
             }

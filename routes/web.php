@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home'); //->middleware('auth.basic');
 
@@ -26,4 +26,8 @@ Route::group(['prefix' => 'panel', 'middleware' => 'auth'], function () {
     });
 
     Route::resource('clients', 'ClientController');
+    
+    Route::resource('users', 'UserController');
+    Route::get('users/create', 'Auth\RegisterController@showRegistrationForm')->name('register');
+    Route::post('users/create', 'Auth\RegisterController@register');
 });
