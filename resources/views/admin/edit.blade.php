@@ -3,9 +3,9 @@
 @section('content')
 
 <div class="box">
-    <div class="box-header">
+    {{-- <div class="box-header">
       <h3 class="box-title">{{ $title }}</h3>
-    </div>
+    </div> --}}
     <!-- /.box-header -->
     <div class="box-body">
         {!! Form::open(['route' => ['clients.update', $client->id], 'method' => 'put']) !!}

@@ -11,18 +11,18 @@
 |
  */
 
-Route::get('/', function () {
+/* Route::get('/', function () {
     return view('welcome');
-});
+}); */
 
 Auth::routes(['register' => false]);
 
-Route::get('/home', 'HomeController@index')->name('home'); //->middleware('auth.basic');
+// Route::get('/home', 'HomeController@index')->name('home'); //->middleware('auth.basic');
 
 Route::group(['prefix' => 'panel', 'middleware' => 'auth'], function () {
 
     Route::get('/', function () {
-        return view('admin.index');
+        return view('admin.index', ['title' => trans('admin.adminpanel')]);
     });
 
     Route::resource('clients', 'ClientController');
