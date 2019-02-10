@@ -1,1 +1,1 @@
-{!! gender_helper($gender) !!}
+<abbr title='{!! gender_helper($gender)['name'] !!}'>{!! gender_helper($gender)['icon'] !!}</abbr>

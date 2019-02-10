@@ -7,7 +7,7 @@
       <h3 class="box-title">{{ $title }}</h3>
     </div> --}}
     <!-- /.box-header -->
-    <div class="box-body">
+    <div class="box-body table-responsive">
         {!! $dataTable->table(['class'=>'dataTable table table-striped table-hover  table-bordered'],true) !!}
     </div>
     <!-- /.box-body -->

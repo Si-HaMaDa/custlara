@@ -60,13 +60,13 @@ if (!function_exists('gender_helper')) {
     {
         switch ($gender_help) {
             case 'male':
-                return '<i class="fa fa-2x fa-mars text-blue"></i>';
+                return ['name'=>'Male', 'icon' => '<i class="fa fa-2x fa-mars text-blue"></i>'];
                 break;
             case 'female':
-                return '<i class="fa fa-2x fa-venus text-red"></i>';
+                return ['name'=>'Female', 'icon' => '<i class="fa fa-2x fa-venus text-red"></i>'];
                 break;
             case 'other':
-                return '<i class="fa fa-2x fa-neuter text-gray"></i>';
+                return ['name'=>'Other', 'icon' => '<i class="fa fa-2x fa-neuter text-gray"></i>'];
                 break;
         }
     }
@@ -77,13 +77,13 @@ if (!function_exists('contacts_helper')) {
     {
         $holder = '';
         if (!empty($contacts_help['fb'])) {
-            $holder .= '<i class="fa fa-2x fa-facebook-official text-blue"></i> ';
+            $holder .= '<a href="'. $contacts_help['fb'] .'" target="_blank"><i class="fa fa-2x fa-facebook-official text-blue"></i></a> ';
         }
         if (!empty($contacts_help['phone'])) {
-            $holder .= '<i class="fa fa-2x fa-whatsapp text-green"></i> ';
+            $holder .= '<a href="tel:'. $contacts_help['phone'] .'" target="_blank"><i class="fa fa-2x fa-whatsapp text-green"></i></a> ';
         }
         if (!empty($contacts_help['email'])) {
-            $holder .= '<i class="fa fa-2x fa-envelope text-gray"></i> ';
+            $holder .= '<a href="mailto:'. $contacts_help['email'] .'" target="_blank"><i class="fa fa-2x fa-envelope text-gray"></i></a> ';
         }
         return $holder;
     }
