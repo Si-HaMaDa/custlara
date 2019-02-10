@@ -21,7 +21,7 @@ return ['', ''];
 if (!function_exists('aurl')) {
     function aurl($url = null)
     {
-        return url('panel/' . $url);
+        return url('/' . $url);
     }
 }
 
